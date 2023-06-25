@@ -1,0 +1,30 @@
+
+The Liskov Substitution Principle (LSP) is another important concept in object-oriented design and is also a part of
+the SOLID principles. It was introduced by Barbara Liskov in a 1987 conference keynote.
+
+The Liskov Substitution Principle states that if a program is using a base class, then the reference to the base class
+can be replaced with a derived class without affecting the functionality of the program.
+
+In other words, objects of a superclass shall be able to be replaced with objects of a subclass without breaking the
+application. This requires all subclasses to behave in the same way as the superclass.
+
+Here's an example to illustrate the principle:
+
+class Bird{
+    void fly(){}
+}
+
+class Duck extends Bird {}
+
+class Ostrich extends Bird {}
+
+
+The above classes Duck and Ostrich are both subtypes of Bird. But the Ostrich cannot fly. So, if we substitute Bird
+with Ostrich in a program that expects a bird to fly, it would lead to an error or unexpected behavior.
+
+This violates Liskov's Substitution Principle. A better approach would be to create separate FlyingBird and
+NonFlyingBird classes, or to use a different design pattern, like composition or strategy pattern, to handle
+differences in behavior.
+
+The Liskov Substitution Principle is aimed at encouraging designers to ensure that their classes are properly
+formed subtypes, and that there aren't methods which don't make sense or behave unexpectedly in derived classes.

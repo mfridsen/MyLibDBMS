@@ -1,0 +1,68 @@
+The Interface Segregation Principle (ISP) is the fourth of the five SOLID principles of object-oriented design and
+programming. The principle was coined by Robert C. Martin (Uncle Bob) while consulting for Xerox.
+
+The Interface Segregation Principle states that "clients should not be forced to depend on interfaces they do not use."
+
+In other words, it's better to have several specific interfaces rather than one general-purpose interface.
+A class should not have to implement methods it doesn't need. If an interface becomes too "fat" or bloated with methods,
+it needs to be split into more specific interfaces.
+
+Let's consider an example to understand this principle:
+
+interface Worker {
+    void work();
+    void eat();
+}
+
+class HumanWorker implements Worker {
+    public void work() {
+        // working...
+    }
+
+    public void eat() {
+        // eating during lunch break
+    }
+}
+
+class RobotWorker implements Worker {
+    public void work() {
+        // working...
+    }
+
+    public void eat() {
+        // do nothing because robots don't eat
+    }
+}
+
+
+In the above example, the RobotWorker class is forced to provide an implementation for the eat() method, but it doesn't
+need it because robots don't eat. This design violates the Interface Segregation Principle.
+
+A better design would be to separate the Worker interface into two interfaces: Workable and Eatable.
+
+interface Workable {
+    void work();
+}
+
+interface Eatable {
+    void eat();
+}
+
+class HumanWorker implements Workable, Eatable {
+    public void work() {
+        // working...
+    }
+
+    public void eat() {
+        // eating during lunch break
+    }
+}
+
+class RobotWorker implements Workable {
+    public void work() {
+        // working...
+    }
+}
+
+Now, the RobotWorker class only needs to implement the Workable interface, and it's not forced to provide an empty
+implementation for the eat() method. This design adheres to the Interface Segregation Principle.

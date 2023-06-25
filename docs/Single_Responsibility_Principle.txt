@@ -1,0 +1,52 @@
+The Single Responsibility Principle states that a class should have one, and only one, reason to change.
+This means that a class should only have one job or one responsibility.
+
+This principle is about limiting the impact of change by isolating it. When a class has more than one responsibility,
+those responsibilities become coupled. A change to one responsibility may impair or inhibit the class's ability to meet
+the others.
+
+Let's take an example to understand this:
+
+Suppose you have a Book class that has methods to get book details and also to print those details:
+
+class Book {
+    String getTitle() {
+        return "A Great Book";
+    }
+
+    String getAuthor() {
+        return "John Doe";
+    }
+
+    void printBookDetails() {
+        System.out.println(getTitle() + " by " + getAuthor());
+    }
+}
+In the above example, the Book class is responsible for maintaining the book details and also for printing the book
+details. According to the Single Responsibility Principle, these two operations are completely different
+responsibilities and should not be part of the same class.
+
+A better design would be to separate these responsibilities into two classes:
+
+class Book {
+    String getTitle() {
+        return "A Great Book";
+    }
+
+    String getAuthor() {
+        return "John Doe";
+    }
+}
+
+class BookPrinter {
+    void printBookDetails(Book book) {
+        System.out.println(book.getTitle() + " by " + book.getAuthor());
+    }
+}
+
+In this design, the Book class is only responsible for maintaining the book details, and the BookPrinter class is only
+responsible for printing the book details. Each class has a single responsibility, adhering to the Single Responsibility
+Principle.
+
+Applying the Single Responsibility Principle makes your code easier to understand, easier to maintain, and more robust.
+Changes in one part of the codebase are less likely to affect other parts when responsibilities are well-separated.

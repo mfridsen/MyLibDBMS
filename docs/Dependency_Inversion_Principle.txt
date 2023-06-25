@@ -1,0 +1,149 @@
+The Dependency Inversion Principle (DIP) is the last of the five SOLID principles of object-oriented design.
+It's a principle that helps to decouple software modules.
+
+The principle states:
+
+High-level modules should not depend on low-level modules. Both should depend on abstractions (e.g., interfaces).
+
+Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions.
+
+Here's a simple example to illustrate this principle:
+
+Consider a Library class that depends on a Book class:
+
+class Book {
+    public String getContent() {
+        return "Content of the book";
+    }
+}
+
+class Library {
+    private Book book;
+
+    // Library class is depending on the lower level class Book.
+    public Library(Book book) {
+        this.book = book;
+    }
+
+    public String getBookContent() {
+        return book.getContent();
+    }
+}
+
+This design violates the Dependency Inversion Principle because the high-level Library class is depending on the
+low-level Book class. If we want to add Newspaper or Magazine classes in the future, we'll have to modify the
+Library class, which is not ideal.
+
+A better design would be to create a Readable interface, and make Book, Newspaper, and Magazine classes implement this
+interface:
+
+interface Readable {
+    String getContent();
+}
+
+class Book implements Readable {
+    public String getContent() {
+        return "Content of the book";
+    }
+}
+
+class Library {
+    private Readable readable;
+
+    // Library class is depending on the abstraction Readable, not on the lower level class Book.
+    public Library(Readable readable) {
+        this.readable = readable;
+    }
+
+    public String getReadableContent() {
+        return readable.getContent();
+    }
+}
+
+Now, the Library class depends on the abstraction Readable, not on the low-level Book class. This design adheres to the
+Dependency Inversion Principle. You can add as many classes as you like (like Newspaper, Magazine, etc.), and the
+Library class won't need to change, as long as these classes implement the Readable interface.
+
+This approach also makes the system more flexible and easier to change because high-level and low-level modules depend
+on the same abstraction. If the details of one module need to change, it won't affect the other module.
+
+
+
+
+
+Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions.
+
+To illustrate this part of the Dependency Inversion Principle, let's consider a scenario where you are building an
+application that sends notifications to users. These notifications could be sent by email, SMS, or push notification.
+
+A naive design might have a NotificationService class that depends directly on concrete classes like EmailService,
+SMSService, and PushNotificationService:
+
+class EmailService {
+    void sendEmail(String message, String receiver){
+        // implementation to send email
+    }
+}
+
+class SMSService {
+    void sendSMS(String message, String receiver){
+        // implementation to send SMS
+    }
+}
+
+class NotificationService {
+    private EmailService emailService;
+    private SMSService smsService;
+
+    public NotificationService(EmailService emailService, SMSService smsService) {
+        this.emailService = emailService;
+        this.smsService = smsService;
+    }
+
+    public void notify(String message, String receiver) {
+        emailService.sendEmail(message, receiver);
+        smsService.sendSMS(message, receiver);
+        // If we need to add a new notification service, such as PushNotificationService, we'd have to modify this class.
+    }
+}
+
+In this design, the NotificationService class (an abstraction) is depending on EmailService and SMSService
+(the details). This violates the Dependency Inversion Principle.
+
+A better design would be to create a Notifier interface, and make EmailService, SMSService, and PushNotificationService
+implement this interface:
+
+interface Notifier {
+    void sendNotification(String message, String receiver);
+}
+
+class EmailService implements Notifier {
+    public void sendNotification(String message, String receiver) {
+        // implementation to send email
+    }
+}
+
+class SMSService implements Notifier {
+    public void sendNotification(String message, String receiver) {
+        // implementation to send SMS
+    }
+}
+
+class NotificationService {
+    private List<Notifier> notifiers;
+
+    public NotificationService(List<Notifier> notifiers) {
+        this.notifiers = notifiers;
+    }
+
+    public void notify(String message, String receiver) {
+        for (Notifier notifier : notifiers) {
+            notifier.sendNotification(message, receiver);
+        }
+    }
+}
+
+In this improved design, the NotificationService class (an abstraction) depends on the Notifier interface
+(another abstraction), not on the EmailService and SMSService classes (the details). This design adheres to the
+Dependency Inversion Principle. If we need to add a new notification service, we just have to create a new class that
+implements the Notifier interface, and we won't need to modify the NotificationService class.
