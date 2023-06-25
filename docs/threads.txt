@@ -1,0 +1,20 @@
+SearchRunnable: Performs searches
+Other CRUD ops
+Notifications for due dates n shit
+
+GUI? No, but use SwingUtilities.invokeLater(Runnable) to schedule the GUI setup code to run on the EDT.
+If you're initializing and setting up your GUI (adding components, setting properties, etc.) outside the context of
+the EDT, you should explicitly make sure that the initialization happens on the EDT
+Here's an example:
+
+  public static void main(String[] args) {
+      SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+              // create and display the GUI here
+              MyGui gui = new MyGui();
+              gui.setVisible(true);
+          }
+      });
+  }
+
+Synchronization (low prio)

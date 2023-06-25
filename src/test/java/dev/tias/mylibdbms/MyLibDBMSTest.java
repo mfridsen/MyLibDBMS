@@ -9,10 +9,6 @@ import org.junit.jupiter.api.*;
  * @project MyLibDBMS
  * @date 6/25/2023
  * @contact matfir-1@student.ltu.se
- * <p>
- * Unit Test for the MyLibDBMS class.
- * <p>
- * Brought to you by copious amounts of nicotine.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MyLibDBMSTest

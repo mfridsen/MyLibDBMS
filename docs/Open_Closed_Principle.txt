@@ -1,0 +1,66 @@
+The Open/Closed Principle (OCP) is a fundamental concept in object-oriented design and is part of the SOLID
+principles, which are five principles of class design that help create systems that are easy to maintain and
+extend over time. SOLID stands for:
+
+Single Responsibility Principle (SRP)
+
+Open/Closed Principle (OCP)
+
+Liskov Substitution Principle (LSP)
+
+Interface Segregation Principle (ISP)
+
+Dependency Inversion Principle (DIP)
+
+The Open/Closed Principle, proposed by Bertrand Meyer, states that "software entities
+(classes, modules, functions, etc.) should be open for extension, but closed for modification".
+
+This means that a class or module should be designed in such a way that its behavior can be extended without having to
+modify its source code. The principle highlights the importance of using abstractions and modular design to create
+flexible, adaptable systems.
+
+Here's an example to help understand the concept:
+
+Let's say you have a Library class with a method listAvailableBooks(). Now you want to add a feature that allows
+filtering books by their genre. A simple approach would be to modify the listAvailableBooks() method to accept a
+genre parameter and return only books of that genre.
+
+However, this approach violates the Open/Closed Principle because you're modifying the Library class to add a new
+feature. If you keep adding new filters this way, the Library class will become complex and hard to maintain.
+
+A better approach that adheres to the OCP would be to create a separate BookFilter interface, and classes
+implementing this interface for each type of filter. The Library class can use these filters without having to
+know the details of how they work. In this way, the Library class is closed for modification
+(you don't have to change its code to add new filters), but open for extension (you can easily add new filters by
+creating new classes that implement the BookFilter interface).
+
+interface BookFilter {
+    boolean isMatch(Book book);
+}
+
+class GenreFilter implements BookFilter {
+    private Genre genre;
+
+    public GenreFilter(Genre genre) {
+        this.genre = genre;
+    }
+
+    @Override
+    public boolean isMatch(Book book) {
+        return book.getGenre().equals(genre);
+    }
+}
+
+class Library {
+    private List<Book> books;
+
+    public List<Book> listAvailableBooks(BookFilter filter) {
+        return books.stream()
+                    .filter(book -> book.isAvailable() && filter.isMatch(book))
+                    .collect(Collectors.toList());
+    }
+}
+
+By using the Open/Closed Principle, you can design your systems in a way that makes them easy to extend with new
+functionality without having to modify existing code. This reduces the risk of introducing new bugs into existing
+functionality and makes your codebase easier to understand and maintain.
