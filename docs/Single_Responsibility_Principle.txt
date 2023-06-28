@@ -22,6 +22,7 @@ class Book {
         System.out.println(getTitle() + " by " + getAuthor());
     }
 }
+
 In the above example, the Book class is responsible for maintaining the book details and also for printing the book
 details. According to the Single Responsibility Principle, these two operations are completely different
 responsibilities and should not be part of the same class.
