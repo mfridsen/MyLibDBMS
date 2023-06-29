@@ -1,7 +1,8 @@
-package dev.tias.mylibdbms.db;
+package dev.tias.mylibdbms.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import dev.tias.mylibdbms.service.DatabaseConnector;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

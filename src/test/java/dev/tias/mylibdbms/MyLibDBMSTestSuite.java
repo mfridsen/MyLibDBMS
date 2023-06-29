@@ -1,6 +1,6 @@
 package dev.tias.mylibdbms;
 
-import dev.tias.mylibdbms.db.DatabaseTestSuite;
+import dev.tias.mylibdbms.service.DatabaseTestSuite;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 

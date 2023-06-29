@@ -1,6 +1,6 @@
 package dev.tias.mylibdbms;
 
-import dev.tias.mylibdbms.db.DatabaseConnector;
+import dev.tias.mylibdbms.service.DatabaseConnector;
 
 /**
  * @author Mattias Fridsén

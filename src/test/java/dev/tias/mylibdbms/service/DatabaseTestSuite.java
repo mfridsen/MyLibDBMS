@@ -1,4 +1,4 @@
-package dev.tias.mylibdbms.db;
+package dev.tias.mylibdbms.service;
 
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;

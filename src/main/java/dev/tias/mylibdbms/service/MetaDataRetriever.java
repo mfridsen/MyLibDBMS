@@ -1,9 +1,9 @@
-package dev.tias.mylibdbms.model;
+package dev.tias.mylibdbms.service;
 
 /**
  * @author Mattias Fridsén
  * @project MyLibDBMS
- * @package dev.tias.mylibdbms.model
+ * @package dev.tias.mylibdbms.db
  * @contact matfir-1@student.ltu.se
  * @date 6/29/2023
  * <p>
@@ -13,10 +13,7 @@ package dev.tias.mylibdbms.model;
  * <p>
  * Brought to you by enough nicotine to kill a large horse.
  */
-public class ExceptionManager
+public class MetaDataRetriever
 {
-    public static void HandleFatalException(Throwable cause)
-    {
 
-    }
 }
