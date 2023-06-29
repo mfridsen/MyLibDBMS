@@ -24,4 +24,13 @@ public class ExceptionManager
         cause.printStackTrace();
         System.exit(1);
     }
+
+    public static void HandleFatalException(Throwable cause, String message)
+    {
+        System.err.println("A fatal error occurred: ");
+        System.err.println(message);
+        System.err.println(cause.getMessage());
+        cause.printStackTrace();
+        System.exit(1);
+    }
 }

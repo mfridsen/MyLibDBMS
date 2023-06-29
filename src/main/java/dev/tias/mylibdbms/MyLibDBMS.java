@@ -17,6 +17,12 @@ import dev.tias.mylibdbms.service.DatabaseConnector;
  */
 public class MyLibDBMS //TODO-prio extend Runnable?
 {
+    //Name of the database
+    public static final String databaseName = "lilla_biblioteket";
+
+    //Current/Logged in user of the system
+    //private static User currentUser = null;
+
     public static void main(String[] args)
     {
         System.out.println("Hello world!");
