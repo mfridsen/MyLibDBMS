@@ -13,12 +13,12 @@ import java.sql.SQLException;
  * @date 6/28/2023
  * @contact matfir-1@student.ltu.se
  * <p>
- * Unit Test for the DatabaseConnection class.
+ * Unit Test for the DatabaseConnector class.
  * <p>
  * Brought to you by copious amounts of nicotine.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class DatabaseConnectionTest
+public class DatabaseConnectorTest
 {
     /**
      * Create the connection to the database.
@@ -30,8 +30,8 @@ public class DatabaseConnectionTest
         {
             System.out.println("BeforeAll:");
             //TODO handle?
-            DatabaseConnection.setVerbose(true);
-            DatabaseConnection.setup();
+            DatabaseConnector.setVerbose(true);
+            DatabaseConnector.setup();
         }
         catch (SQLException | ClassNotFoundException e)
         {
@@ -45,11 +45,11 @@ public class DatabaseConnectionTest
     @AfterAll
     static void tearDown()
     {
-        DatabaseConnection.closeConnection();
+        DatabaseConnector.closeConnection();
     }
 
     /**
-     * Tests the getConnection method of the DatabaseConnection class by asserting that the
+     * Tests the getConnection method of the DatabaseConnector class by asserting that the
      * connection object is not null.
      */
     @Test
@@ -58,15 +58,15 @@ public class DatabaseConnectionTest
     {
         System.out.println("\n1: Testing connection...");
         System.out.println("Creating connection to database...");
-        Connection connection = DatabaseConnection.getConnection();
+        Connection connection = DatabaseConnector.getConnection();
         System.out.println("Asserting connection is not null, should be true: " + (connection != null));
         Assertions.assertNotNull(connection);
-        DatabaseConnection.closeConnection();
+        DatabaseConnector.closeConnection();
         System.out.println("\nTEST FINISHED.");
     }
 
     /**
-     * Tests the connectToDatabaseServer method of the DatabaseConnection class with an incorrect URL.
+     * Tests the connectToDatabaseServer method of the DatabaseConnector class with an incorrect URL.
      * Expects a SQLException and asserts that the error message contains "Communications link failure".
      */
     @Test
@@ -79,7 +79,7 @@ public class DatabaseConnectionTest
         String password = "password";
 
         SQLException exception = assertThrows(SQLException.class, () ->
-                DatabaseConnection.connectToDatabaseServer(url, user, password));
+                DatabaseConnector.connectToDatabaseServer(url, user, password));
 
         String expectedMessage = "Communications link failure";
         String actualMessage = exception.getMessage();
@@ -91,7 +91,7 @@ public class DatabaseConnectionTest
     }
 
     /**
-     * Tests the connectToDatabaseServer method of the DatabaseConnection class with an incorrect username.
+     * Tests the connectToDatabaseServer method of the DatabaseConnector class with an incorrect username.
      * Expects a SQLException and asserts that the error message contains "Access denied for user".
      */
     @Test
@@ -104,7 +104,7 @@ public class DatabaseConnectionTest
         String password = "password";
 
         SQLException exception = assertThrows(SQLException.class, () ->
-                DatabaseConnection.connectToDatabaseServer(url, user, password));
+                DatabaseConnector.connectToDatabaseServer(url, user, password));
 
         String expectedMessage = "Access denied for user";
         String actualMessage = exception.getMessage();
@@ -116,7 +116,7 @@ public class DatabaseConnectionTest
     }
 
     /**
-     * Tests the connectToDatabaseServer method of the DatabaseConnection class with an incorrect username.
+     * Tests the connectToDatabaseServer method of the DatabaseConnector class with an incorrect username.
      * Expects a SQLException and asserts that the error message contains "Access denied for user".
      */
     @Test
@@ -129,7 +129,7 @@ public class DatabaseConnectionTest
         String password = "badpassword";
 
         SQLException exception = assertThrows(SQLException.class, () ->
-                DatabaseConnection.connectToDatabaseServer(url, user, password));
+                DatabaseConnector.connectToDatabaseServer(url, user, password));
 
         String expectedMessage = "Access denied for user";
         String actualMessage = exception.getMessage();

@@ -1,5 +1,7 @@
 package dev.tias.mylibdbms;
 
+import dev.tias.mylibdbms.db.DatabaseConnector;
+
 /**
  * @author Mattias Fridsén
  * @project MyLibDBMS
@@ -18,5 +20,16 @@ public class MyLibDBMS //TODO-prio extend Runnable?
     public static void main(String[] args)
     {
         System.out.println("Hello world!");
+    }
+
+    /**
+     * Exits the program with status. If the connection to the database is still active, closes it.
+     */
+    public static void exit(int status)
+    {
+        //Always close the connection to the database after use
+        if (DatabaseConnector.getConnection() != null)
+            DatabaseConnector.closeConnection();
+        System.exit(status);
     }
 }

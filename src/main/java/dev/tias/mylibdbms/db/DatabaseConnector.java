@@ -22,9 +22,10 @@ import java.sql.SQLException;
  * <p>
  * Brought to you by enough nicotine to kill a large horse.
  */
-public class DatabaseConnection
+public class DatabaseConnector
 {
     private static Connection connection = null;
+
     //Print commands being run, default = not
     private static boolean verbose = false;
 
@@ -37,7 +38,7 @@ public class DatabaseConnection
      * server: localhost
      * port: 3306
      */
-    public static void setup()
+    public static void setup() //TODO-exceptions catch here
     throws SQLException, ClassNotFoundException
     {
         String url = "jdbc:mysql://localhost:3306";
@@ -118,6 +119,6 @@ public class DatabaseConnection
 
     public static void setVerbose(boolean verbose)
     {
-        DatabaseConnection.verbose = verbose;
+        DatabaseConnector.verbose = verbose;
     }
 }
