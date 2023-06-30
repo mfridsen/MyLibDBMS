@@ -1,6 +1,9 @@
 package dev.tias.mylibdbms;
 
-import dev.tias.mylibdbms.service.DatabaseTestSuite;
+import dev.tias.mylibdbms.control.ControlTestSuite;
+import dev.tias.mylibdbms.model.ModelTestSuite;
+import dev.tias.mylibdbms.service.db.DatabaseTestSuite;
+import dev.tias.mylibdbms.view.ViewTestSuite;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 
@@ -17,9 +20,9 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @SelectClasses({
         DatabaseTestSuite.class,
-        //ModelTestSuite.class,
-        //ControlTestSuite.class,
-        //ViewTestSuite.class
+        ModelTestSuite.class,
+        ControlTestSuite.class,
+        ViewTestSuite.class
 })
 public class MyLibDBMSTestSuite
 {

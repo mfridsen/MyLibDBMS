@@ -1,4 +1,6 @@
-package dev.tias.mylibdbms.service;
+package dev.tias.mylibdbms.service.db;
+
+import dev.tias.mylibdbms.service.exceptions.ExceptionManager;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package dev.tias.mylibdbms.service;
+package dev.tias.mylibdbms.service.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

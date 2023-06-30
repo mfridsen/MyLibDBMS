@@ -1,8 +1,9 @@
-package dev.tias.mylibdbms.service;
+package dev.tias.mylibdbms.service.db;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import dev.tias.mylibdbms.MyLibDBMS;
+import dev.tias.mylibdbms.service.exceptions.ExceptionManager;
 
 import java.io.FileReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package dev.tias.mylibdbms.service;
+package dev.tias.mylibdbms.service.db;
 
 /**
  * @author Mattias Fridsén

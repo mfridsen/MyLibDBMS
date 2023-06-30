@@ -1,6 +1,7 @@
-package dev.tias.mylibdbms.service;
+package dev.tias.mylibdbms.service.db;
 
 import dev.tias.mylibdbms.MyLibDBMS;
+import dev.tias.mylibdbms.service.exceptions.ExceptionManager;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
