@@ -2,7 +2,6 @@ package dev.tias.mylibdbms.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import dev.tias.mylibdbms.service.DatabaseConnector;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -27,17 +26,10 @@ public class DatabaseConnectorTest
     @BeforeAll
     static void setup()
     {
-        try
-        {
-            System.out.println("BeforeAll:");
-            //TODO handle?
-            DatabaseConnector.setVerbose(true);
-            DatabaseConnector.setup();
-        }
-        catch (SQLException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        System.out.println("BeforeAll:");
+        //TODO handle?
+        DatabaseConnector.setVerbose(true);
+        DatabaseConnector.setup();
     }
 
     /**
@@ -46,6 +38,7 @@ public class DatabaseConnectorTest
     @AfterAll
     static void tearDown()
     {
+        System.out.println("Tearing down test environment...");
         DatabaseConnector.closeConnection();
     }
 

@@ -21,38 +21,35 @@ import java.sql.*;
  * <p>
  * Brought to you by enough nicotine to kill a large horse.
  */
-public class DatabaseManager
+public class DatabaseAccessManager
 {
-    //The DatabaseHandler needs a connection to perform commands and queries.
+    //The DatabaseAccessManager needs a connection to perform commands and queries.
     private static Connection connection;
     //Print commands being run, default = not
     private static boolean verbose = false;
 
+    public static Connection getConnection()
+    {
+        return connection;
+    }
+
     /**
-     * Sets up the DatabaseConnection, then checks if the database exists. If not, calls createDatabase to
+     * Sets up the connection to the MySQL server, then checks if the database exists. If not, calls createDatabase to
      * create it.
      */
     public static void setup(boolean verbose)
     {
-        try
-        {
-            //Set verbosity
-            DatabaseManager.verbose = verbose;
+        //Set verbosity
+        DatabaseAccessManager.verbose = verbose;
 
-            //Setup connection
-            DatabaseConnector.setup();
+        //Setup connection
+        DatabaseConnector.setup();
 
-            //Retrieve connection
-            connection = DatabaseConnector.getConnection();
+        //Retrieve connection
+        connection = DatabaseConnector.getConnection();
 
-            executeCommand("drop database if exists " + MyLibDBMS.databaseName);
-            createDatabase(MyLibDBMS.databaseName);
-        }
-        catch (SQLException | ClassNotFoundException e)
-        {
-            ExceptionManager.HandleFatalException(e, "Failed to setup databse due to " +
-                    e.getClass().getName() + ": " + e.getMessage());
-        }
+        executeCommand("drop database if exists " + MyLibDBMS.databaseName);
+        createDatabase(MyLibDBMS.databaseName);
 
         /*
         if (!databaseExists(LibraryManager.databaseName)) {

@@ -2,6 +2,8 @@ package dev.tias.mylibdbms.service;
 
 import java.util.logging.Logger;
 
+import static org.junit.Assert.fail;
+
 /**
  * @author Mattias Fridsén
  * @project MyLibDBMS
@@ -20,17 +22,26 @@ public class ExceptionManager
     public static void HandleFatalException(Throwable cause)
     {
         System.err.println("A fatal error occurred: ");
-        System.err.println(cause.getMessage());
+        System.err.println("Cause message: " + cause.getMessage());
         cause.printStackTrace();
         System.exit(1);
     }
 
     public static void HandleFatalException(Throwable cause, String message)
     {
-        System.err.println("A fatal error occurred: ");
+        System.err.println("A fatal error occurred with message: ");
         System.err.println(message);
-        System.err.println(cause.getMessage());
+        System.err.println("Cause message: " + cause.getMessage());
         cause.printStackTrace();
         System.exit(1);
+    }
+
+    public static void HandleTestException(Throwable cause)
+    {
+        System.err.println("An unexpected exception occurred during test with message: ");
+        System.err.println(cause.getMessage());
+        System.err.println("Stack trace: ");
+        cause.printStackTrace();
+        fail();
     }
 }

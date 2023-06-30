@@ -2,6 +2,7 @@ package dev.tias.mylibdbms.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import dev.tias.mylibdbms.MyLibDBMS;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,7 +40,6 @@ public class DatabaseConnector
      * port: 3306
      */
     public static void setup() //TODO-exceptions catch here
-    throws SQLException, ClassNotFoundException
     {
         String url = "jdbc:mysql://localhost:3306";
         String user = null;
@@ -49,17 +49,24 @@ public class DatabaseConnector
         {
             // Read the user and password from config.json
             Gson gson = new Gson();
-            JsonElement config = gson.fromJson(new FileReader("src/main/resources/config.json"),
+            JsonElement config = gson.fromJson(new FileReader(MyLibDBMS.configPath),
                     JsonElement.class);
             user = config.getAsJsonObject().get("user").getAsString();
             password = config.getAsJsonObject().get("password").getAsString();
         }
         catch (IOException e) //TODO-exception
         {
-            // Handle any exceptions that might occur while reading the file
+            ExceptionManager.HandleFatalException(e, "Could not find config.json file at path: ");
         }
 
-        connectToDatabaseServer(url, user, password);
+        try
+        {
+            connectToDatabaseServer(url, user, password);
+        }
+        catch (SQLException | ClassNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

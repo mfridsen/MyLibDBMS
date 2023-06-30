@@ -20,6 +20,9 @@ public class MyLibDBMS //TODO-prio extend Runnable?
     //Name of the database
     public static final String databaseName = "lilla_biblioteket";
 
+    //Config file path
+    public static final String configPath = "src/main/resources/config.json";
+
     //Current/Logged in user of the system
     //private static User currentUser = null;
 
