@@ -6,7 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author Mattias Fridsén
@@ -48,7 +51,7 @@ public class DatabaseAccessManager
         //Retrieve connection
         connection = DatabaseConnector.getConnection();
 
-        executeCommand("drop database if exists " + MyLibDBMS.databaseName);
+        executePreparedUpdate("drop database if exists " + MyLibDBMS.databaseName, null);
         createDatabase(MyLibDBMS.databaseName);
 
         /*
@@ -73,7 +76,7 @@ public class DatabaseAccessManager
         try
         {
             QueryResult queryResult = executePreparedQuery(query, params);
-            ResultSet resultSet = queryResult.getResultSet();
+            ResultSet resultSet = queryResult.resultSet();
             boolean exists = resultSet.next();
             queryResult.close();
             return exists;
@@ -94,69 +97,51 @@ public class DatabaseAccessManager
     public static void createDatabase(String databaseName)
     {
         //Create DB
-        executeCommand("create database " + databaseName);
+        executePreparedUpdate("create database " + databaseName, null);
         //Use DB
-        executeCommand("use " + MyLibDBMS.databaseName);
+        executePreparedUpdate("use " + databaseName, null);
         //Fill DB with tables and data
         executeSQLCommandsFromFile("src/main/resources/sql/create_tables.sql");
         executeSQLCommandsFromFile("src/main/resources/sql/data/test_data.sql");
     }
 
+    //TODO-TEST
     /**
-     * Executes a single SQL command on the connected database. Returns nothing, only prints number of rows affected if
-     * command was successfully executed.
+     * Executes an SQL update command such as INSERT, UPDATE, DELETE, or CREATE TABLE
+     * using a prepared statement. These commands modify data and return the number of
+     * rows affected, which this method also returns.
      *
-     * @param command the SQL command to execute.
+     * @param command  The SQL update command to execute.
+     * @param params   An array of parameter values to be bound to the SQL command.
+     * @param settings Optional PreparedStatement settings, such as Statement.RETURN_GENERATED_KEYS.
+     * @return The number of rows affected by the update.
      */
-    public static void executeCommand(String command)
+    public static int executePreparedUpdate(String command, String[] params, int... settings)
     {
         if (verbose)
         {
-            System.out.println("\nExecuting command:");
+            System.out.println("\nExecuting Prepared Update: ");
             SQLFormatter.printFormattedSQL(command);
         }
 
         try
         {
-            Statement statement = connection.createStatement();
-            int rows = statement.executeUpdate(command);
-            if (verbose)
-                System.out.println("Command executed; rows affected: " + rows);
-            statement.close(); //Always close Statements after we're done with them
-        }
-        catch (SQLException e)
-        {
-            ExceptionManager.HandleFatalException(e, "Failed to execute command due to " +
-                    e.getClass().getName() + ": " + e.getMessage());
-        }
-    }
-
-    //TODO-TEST
-
-    /**
-     * Execute an SQL update statement using a prepared statement.
-     *
-     * @param command    The SQL statement to execute.
-     * @param parameters An array of values to be bound to the SQL statement.
-     * @return The number of rows affected by the update.
-     */
-    public static int executePreparedUpdate(String command, String[] parameters)
-    {
-        if (verbose)
-        {
-            System.out.println("\nExecuting command:");
-            SQLFormatter.printFormattedSQL(command);
-        }
-
-        try (PreparedStatement stmt = connection.prepareStatement(command))
-        {
-
-            //Bind the provided parameters to the SQL statement
-            if (parameters != null)
+            PreparedStatement stmt;
+            if (settings.length > 0)
             {
-                for (int i = 0; i < parameters.length; i++)
+                stmt = connection.prepareStatement(command, settings);
+            }
+            else
+            {
+                stmt = connection.prepareStatement(command);
+            }
+
+            //Bind the provided params to the SQL statement
+            if (params != null)
+            {
+                for (int i = 0; i < params.length; i++)
                 {
-                    stmt.setString(i + 1, parameters[i]);
+                    stmt.setString(i + 1, params[i]);
                 }
             }
 
@@ -173,42 +158,19 @@ public class DatabaseAccessManager
         return -1;
     }
 
+    //TODO-test
     /**
-     * Executes a single SQL query on the connected database. SQL queries, unlike SQL commands, do not affect rows,
-     * but do instead produce ResultSets which are sent up the call stack in a QueryResult.
+     * Executes an SQL query command such as SELECT using a prepared statement.
+     * These commands retrieve data and return a ResultSet, which is encapsulated
+     * in the QueryResult object returned by this method.
      *
-     * @param query the SQL query to execute.
-     * @return a QueryResult.
-     */
-    public static QueryResult executeQuery(String query)
-    {
-        if (verbose)
-        {
-            System.out.println("\nExecuting query:");
-            SQLFormatter.printFormattedSQL(query);
-        }
-
-        ResultSet resultSet = null;
-        Statement statement = null;
-        try
-        {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-        }
-        catch (SQLException e)
-        {
-            ExceptionManager.HandleFatalException(e, "Failed to execute query due to " +
-                    e.getClass().getName() + ": " + e.getMessage());
-        }
-        return new QueryResult(resultSet, statement);
-    }
-
-    //TODO-comment
-
-    /**
-     * @param query
-     * @param params
-     * @return
+     * @param query    The SQL query command to execute.
+     * @param params   An array of parameter values to be bound to the SQL command.
+     * @param settings Optional PreparedStatement settings. These are less commonly used than for UPDATE/INSERT
+     *                 operations.
+     * @return A QueryResult object that encapsulates the ResultSet and the PreparedStatement.
+     * The ResultSet can be iterated to retrieve the data, and the PreparedStatement should
+     * be closed when finished.
      */
     public static QueryResult executePreparedQuery(String query, String[] params, int... settings)
     {
@@ -246,40 +208,6 @@ public class DatabaseAccessManager
         return new QueryResult(resultSet, preparedStatement);
     }
 
-    /**
-     * Executes a SQL update operation (such as UPDATE, INSERT, or DELETE) on the database, using a prepared statement
-     * with the given SQL command and parameters.
-     *
-     * @param sql    The SQL command to be executed. This command should be a SQL UPDATE, INSERT, or DELETE command,
-     *               and can include placeholders (?) for parameters.
-     * @param params The parameters to be used in the SQL command. The parameters will be inserted into the command
-     *               in the order they appear in the array.
-     * @return The number of rows affected by the update.
-     */
-    public static int executeUpdate(String sql, String[] params)
-    {
-        if (verbose) System.out.println("\nExecuting update: " + sql);
-
-        int rowsAffected = 0;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql))
-        {
-            for (int i = 0; i < params.length; i++)
-            {
-                preparedStatement.setString(i + 1, params[i]);
-            }
-
-            //The method executeUpdate() returns the number of affected rows.
-            rowsAffected = preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
-        {
-            ExceptionManager.HandleFatalException(e, "Failed to execute update due to " +
-                    e.getClass().getName() + ": " + e.getMessage());
-        }
-
-        return rowsAffected;
-    }
 
     /**
      * A simple method which reads the contents of a file, and executes any SQL commands found in that file.
@@ -326,7 +254,7 @@ public class DatabaseAccessManager
 
                     if (!command.isEmpty())
                     {
-                        executeCommand(command);
+                        executePreparedUpdate(command, null);
                     }
 
                     //Reset the command builder for the next command
