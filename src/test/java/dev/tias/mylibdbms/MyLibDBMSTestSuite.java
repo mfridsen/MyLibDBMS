@@ -26,4 +26,6 @@ import org.junit.platform.suite.api.Suite;
 })
 public class MyLibDBMSTestSuite
 {
+    //TODO-prio make a GUI for the test suite where one can select which tests to run, run the tests over and over,
+    // display the results, save the results to log files etc
 }

@@ -17,6 +17,9 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @SelectClasses({
         DatabaseConnectorTest.class,
+
+
+        DatabaseAccessManagerSetupTest.class,
 })
 public class DatabaseTestSuite
 {

@@ -1,6 +1,4 @@
-package dev.tias.mylibdbms.service;
-
-import java.util.logging.Logger;
+package dev.tias.mylibdbms.service.exceptions;
 
 import static org.junit.Assert.fail;
 

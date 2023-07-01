@@ -38,20 +38,24 @@ public class DatabaseAccessManager
     }
 
     /**
-     * Sets up the connection to the MySQL server, then checks if the database exists. If not, calls createDatabase to
-     * create it.
+     * Sets up and retrieves the connection to the MySQL server.
+     * @param verbose a flag to set the verbose mode of this class.
      */
     public static void setup(boolean verbose)
     {
         //Set verbosity
         DatabaseAccessManager.verbose = verbose;
 
-        //Setup connection
+        //Setup connector
         DatabaseConnector.setup();
 
         //Retrieve connection
         connection = DatabaseConnector.getConnection();
+    }
 
+    //TODO-comment
+    public static void setupDatabase()
+    {
         executePreparedUpdate("drop database if exists " + MyLibDBMS.databaseName, null);
         createDatabase(MyLibDBMS.databaseName);
 
@@ -60,7 +64,6 @@ public class DatabaseAccessManager
             createDatabase(LibraryManager.databaseName);
         } else executeCommand("use " + LibraryManager.databaseName);
         */
-
     }
 
     /**
